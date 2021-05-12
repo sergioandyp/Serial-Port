@@ -2,76 +2,78 @@
 #define _SERIAL_H
 
 #include <boost/asio.hpp>
-
 #include <string>
+#include <sstream>
 
-class SerialPort : public boost::asio::serial_port_base {
+#define DEFAULT_BAUD_RATE	115200
+
+
+// Clase SerialPort para facilitar el uso de puerto serie en base a la libreria asio
+class SerialPort {
 public:
 
-	bool initPort(std::string port);
-	//
-	//boost::asio::io_context io_context;
+	SerialPort();
+	
+	// Crea el objeto e inicia una comunicacion con el puerto y baud_rate especificado
+	SerialPort(std::string port, unsigned int baudRate = DEFAULT_BAUD_RATE);
+
+	~SerialPort();
+
+	// Inicia una comunicación en el puerto y baud_rate especificado
+	// Devuelve 1 si ocurrio un error
+	bool initPort(std::string port, unsigned int baudRate = DEFAULT_BAUD_RATE);
+	
+	// Se desconecta del puerto si estaba conectado
+	// Devuelve 1 si ocurrio un error o no estaba conectado
+	bool disconnect();
+
+	// Se conigura el baudRate especificado, para eso debe haber una conexion iniciada
+	// Devuelve 1 si hubo error
+	bool setBaudRate(unsigned int baudRate);
+
+	void startReading();
+	
+	void stopReading();
+
+	// Esta funcion se debe llamar continuamente para realizar las
+	// acciones de lectura/escritura asincrónicas
+	void runOperations();
+
+	// Devuelve si hay contenido para leer
+	bool isNewData();
+
+	// Devuelve si el contenido no leido tiene un fin de linea
+	bool isNewLine();
+
+	// Devuelve toda el contenido recibido que no ha sido leido
+	std::string getData();
+
+	// Devuelve el contenido recivido hasta el primer salto de linea
+	// Si no hay salto de linea, devuelve string vacio y el contenido no leido
+	// se mantiene en el buffer
+	std::string getLine();
+
+private:
+	boost::asio::io_service io_service;
+	boost::asio::serial_port serial;
+	boost::system::error_code error;
+	
+	char readByte;
+	std::string data;
+
+	//boost::asio::streambuf buff;
+
+	bool isReading;
+	//bool isData;
+
+	bool setDefaults();
+
+	void requestByteRead();
+	void readByteCb(const boost::system::error_code& error, std::size_t size);
+	// Dejar una de estas dos implementaciones
+	//void requestBuffRead();
+	//void readBufferCb(const boost::system::error_code& error, std::size_t size);
 
 };
 
 #endif
-//
-//#include <boost/asio.hpp>
-//
-//class SimpleSerial
-//{
-//public:
-//    /**
-//     * Constructor.
-//     * \param port device name, example "/dev/ttyUSB0" or "COM4"
-//     * \param baud_rate communication speed, example 9600 or 115200
-//     * \throws boost::system::system_error if cannot open the
-//     * serial device
-//     */
-//    SimpleSerial(std::string port, unsigned int baud_rate)
-//        : io(), serial(io, port)
-//    {
-//        serial.set_option(boost::asio::serial_port_base::baud_rate(baud_rate));
-//    }
-//
-//    /**
-//     * Write a string to the serial device.
-//     * \param s string to write
-//     * \throws boost::system::system_error on failure
-//     */
-//    void writeString(std::string s)
-//    {
-//        boost::asio::write(serial, boost::asio::buffer(s.c_str(), s.size()));
-//    }
-//
-//    /**
-//     * Blocks until a line is received from the serial device.
-//     * Eventual '\n' or '\r\n' characters at the end of the string are removed.
-//     * \return a string containing the received line
-//     * \throws boost::system::system_error on failure
-//     */
-//    std::string readLine()
-//    {
-//        Reading data char by char, code is optimized for simplicity, not speed
-//        using namespace boost;
-//        char c;
-//        std::string result;
-//        for (;;)
-//        {
-//            asio::read(serial, asio::buffer(&c, 1));
-//            switch (c)
-//            {
-//            case '\r':
-//                break;
-//            case '\n':
-//                return result;
-//            default:
-//                result += c;
-//            }
-//        }
-//    }
-//
-//private:
-//    boost::asio::io_service io;
-//    boost::asio::serial_port serial;
-//};
