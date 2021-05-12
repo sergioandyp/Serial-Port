@@ -43,18 +43,11 @@ bool SerialPort::setDefaults() {
 
     if (!serial.is_open()) return 1;    // Debe haber una conexion abierta para poder configurarla
 
-    // Esto reinicia el Arduino
-    // software parece que tambien anda
-    serial.set_option(boost::asio::serial_port::flow_control(boost::asio::serial_port::flow_control::hardware), error);
-    
-    /// TODO: VER ESTO:
-    //port_->set_option(boost::asio::serial_port_base::baud_rate(baud_rate));
-    //port_->set_option(boost::asio::serial_port_base::character_size(8));
-    //port_->set_option(boost::asio::serial_port_base::stop_bits(boost::asio::serial_port_base::stop_bits::one));
-    //port_->set_option(boost::asio::serial_port_base::parity(boost::asio::serial_port_base::parity::none));
-    //port_->set_option(boost::asio::serial_port_base::flow_control(boost::asio::serial_port_base::flow_control::none));
-    
-    
+    // Configuraciones necesarias
+    serial.set_option(boost::asio::serial_port::flow_control(boost::asio::serial_port::flow_control::none), error);    
+    serial.set_option(boost::asio::serial_port_base::character_size(8));
+    serial.set_option(boost::asio::serial_port_base::parity(boost::asio::serial_port_base::parity::none));
+    serial.set_option(boost::asio::serial_port_base::stop_bits(boost::asio::serial_port_base::stop_bits::one));
     
     return error.failed();
 }

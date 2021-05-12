@@ -4,23 +4,27 @@
 
 using namespace std;
 
-int readTest();
-int writeTest();
+int readTest(string portName);
+int writeTest(string portName);
 
 int main() {
 
-    //readTest();
-    return writeTest();
+    string port;
+
+    cin >> port;
+
+    return readTest(port);
+    //return writeTest(port);
 
 
 }
 
 
-int readTest() {
+int readTest(string portName) {
     
     try {
 
-        SerialPort port("COM5");
+        SerialPort port(portName);
 
         cout << "Recibo" << endl;
 
@@ -38,7 +42,7 @@ int readTest() {
 
             cout << data << endl;
 
-            Sleep(rand() % 5000);
+            //Sleep(rand() % 5000);
         }
 
         port.disconnect();
@@ -49,10 +53,10 @@ int readTest() {
     }
 }
 
-int writeTest() {
+int writeTest(string portName) {
     try {
 
-        SerialPort port("COM7");
+        SerialPort port(portName);
 
         cout << "Envio" << endl;
 
