@@ -31,8 +31,10 @@ public:
 	// Devuelve 1 si hubo error
 	bool setBaudRate(unsigned int baudRate);
 
+	// Comienza a leer del puerto serie
 	void startReading();
 	
+	// Deja de leer del puerto serie
 	void stopReading();
 
 	// Esta funcion se debe llamar continuamente para realizar las
@@ -53,6 +55,13 @@ public:
 	// se mantiene en el buffer
 	std::string getLine();
 
+	// Escribe al puerto de forma asincronica
+	// Cuando writeDone devuelva true, la escritura se completo correctamente
+	void write(std::string w_data);
+	
+	// Devuelve true si la escritura se completo correctamente
+	bool writeDone();
+
 private:
 	boost::asio::io_service io_service;
 	boost::asio::serial_port serial;
@@ -61,18 +70,17 @@ private:
 	char readByte;
 	std::string data;
 
-	//boost::asio::streambuf buff;
-
 	bool isReading;
-	//bool isData;
+
+	bool writeOK;
 
 	bool setDefaults();
 
 	void requestByteRead();
 	void readByteCb(const boost::system::error_code& error, std::size_t size);
-	// Dejar una de estas dos implementaciones
-	//void requestBuffRead();
-	//void readBufferCb(const boost::system::error_code& error, std::size_t size);
+	
+	void writeCb(const boost::system::error_code& error, std::size_t size);
+
 
 };
 

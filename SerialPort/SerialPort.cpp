@@ -6,12 +6,13 @@
 
 using namespace std;
 
-SerialPort::SerialPort() : io_service(), serial(io_service), readByte(), isReading(false) //, isData(false)
+SerialPort::SerialPort() : 
+    io_service(), serial(io_service), error(), data(), readByte(), isReading(false), writeOK(false)
 {
 }
 
 SerialPort::SerialPort(string port, unsigned int baudRate) : 
-    io_service(), serial(io_service, port), readByte(), isReading(false) //, isData(false) 
+    io_service(), serial(io_service, port), readByte(), error(), data(), isReading(false), writeOK(false)
 {
     setBaudRate(baudRate);
     setDefaults();
@@ -72,10 +73,7 @@ void SerialPort::startReading() {
     
     isReading = true;
 
-    //isData = false;
-
     requestByteRead();
-    //requestBuffRead();
 }
 
 void SerialPort::stopReading() {
@@ -94,36 +92,10 @@ void SerialPort::readByteCb(const boost::system::error_code& error, std::size_t 
 
     if (serial.is_open() && isReading) {
         if (size > 0) data += readByte;     // Agregamos el nuevo byte al string
-        //isData = true;
         requestByteRead();
     }
 }
 
-//
-//void SerialPort::requestBuffRead() {
-//
-//    //serial.async_read_some(buff,       // Empezamos a leer de forma asincrónica
-//    //    boost::bind(&SerialPort::readBufferCb, this,
-//    //        boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-//
-//
-//    // Esta mal, streambuf no se usa asi
-//
-//
-//    //async_read_some(serial, buff,       // Empezamos a leer de forma asincrónica
-//    //    boost::bind(&SerialPort::readBufferCb, this,
-//    //        boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-//
-//}
-//
-//
-//void SerialPort::readBufferCb(const boost::system::error_code& error, std::size_t size) {
-//
-//    if (serial.is_open() && isReading) {
-//        //isData = true;
-//        requestBuffRead();
-//    }
-//}
 
 string SerialPort::getData() {
 
@@ -133,13 +105,6 @@ string SerialPort::getData() {
 
     return temp;
 
-    //istream is(&buff);
-
-    //getline(is, data, {});  // Guardo toda lo recibido en data
-
-    //isData = false;
-
-    //return data;
 }
 
 string SerialPort::getLine() {
@@ -167,4 +132,23 @@ bool SerialPort::isNewData() {
 
 bool SerialPort::isNewLine() {
     return data.find_first_of(NEW_LINE_CHAR) != data.npos;   // Si data no esta vacio, hay contenido para leer
+}
+
+void SerialPort::write(std::string w_data) {
+    if (serial.is_open()) {
+        serial.async_write_some(boost::asio::buffer(w_data.c_str(), w_data.length()), 
+            boost::bind(&SerialPort::writeCb, this, 
+                boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+        
+        writeOK = false;
+    }
+}
+
+bool SerialPort::writeDone() {
+    return writeOK;
+}
+
+void SerialPort::writeCb(const boost::system::error_code& error, size_t size) {
+    if (!error.failed())
+        writeOK = true;
 }
