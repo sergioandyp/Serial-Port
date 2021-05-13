@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SerialPort", "SerialPort\SerialPort.vcxproj", "{0AF640F0-6D36-4C6B-94C4-87EC0103610A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SerialLCD", "SerialLCD\SerialLCD.vcxproj", "{89BC92D6-4D9D-4FB8-A047-D61B48651120}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{0AF640F0-6D36-4C6B-94C4-87EC0103610A}.Release|x64.Build.0 = Release|x64
 		{0AF640F0-6D36-4C6B-94C4-87EC0103610A}.Release|x86.ActiveCfg = Release|Win32
 		{0AF640F0-6D36-4C6B-94C4-87EC0103610A}.Release|x86.Build.0 = Release|Win32
+		{89BC92D6-4D9D-4FB8-A047-D61B48651120}.Debug|x64.ActiveCfg = Debug|x64
+		{89BC92D6-4D9D-4FB8-A047-D61B48651120}.Debug|x64.Build.0 = Debug|x64
+		{89BC92D6-4D9D-4FB8-A047-D61B48651120}.Debug|x86.ActiveCfg = Debug|Win32
+		{89BC92D6-4D9D-4FB8-A047-D61B48651120}.Debug|x86.Build.0 = Debug|Win32
+		{89BC92D6-4D9D-4FB8-A047-D61B48651120}.Release|x64.ActiveCfg = Release|x64
+		{89BC92D6-4D9D-4FB8-A047-D61B48651120}.Release|x64.Build.0 = Release|x64
+		{89BC92D6-4D9D-4FB8-A047-D61B48651120}.Release|x86.ActiveCfg = Release|Win32
+		{89BC92D6-4D9D-4FB8-A047-D61B48651120}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
