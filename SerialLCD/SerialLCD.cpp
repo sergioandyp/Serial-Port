@@ -144,11 +144,7 @@ void SerialLCD::print() {
 
 	// Enviamos el string al port
 
-	port.write(text);	
-	// Escritura "sincronica"
-	while (!port.writeDone()) {		// Peligroso, puede colgar el programa aca
-		port.runOperations();
-	}
+	port.writeSync(text); 	// Escritura sincronica
 
 
 	// DEBUG:

@@ -18,10 +18,10 @@ int main() {
 
 	string text;
 
-
 	while (text != "q") {	// quit
 		
-		cin >> text;
+		//cin >> text;
+		getline(cin, text);
 	
 		if (text == "u") {		// up
 			lcd.lcdMoveCursorUp();

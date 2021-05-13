@@ -58,6 +58,10 @@ public:
 	// Escribe al puerto de forma asincronica
 	// Cuando writeDone devuelva true, la escritura se completo correctamente
 	void write(std::string w_data);
+
+	// Escribe al puerto de forma sincronica.
+	// Devuelve true si hubo error
+	bool writeSync(std::string w_data);
 	
 	// Devuelve true si la escritura se completo correctamente
 	bool writeDone();

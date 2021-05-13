@@ -129,13 +129,23 @@ bool SerialPort::isNewLine() {
 
 void SerialPort::write(std::string w_data) {
     if (serial.is_open()) {
+        writeOK = false;
+        
         serial.async_write_some(boost::asio::buffer(w_data.c_str(), w_data.length()), 
             boost::bind(&SerialPort::writeCb, this, 
                 boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-        
-        writeOK = false;
     }
 }
+
+bool SerialPort::writeSync(string w_data) {
+    if (serial.is_open()) {
+        serial.write_some(boost::asio::buffer(w_data.c_str(), w_data.length()), error);
+
+        return error.failed();
+    }
+    return true;
+}
+
 
 bool SerialPort::writeDone() {
     return writeOK;
