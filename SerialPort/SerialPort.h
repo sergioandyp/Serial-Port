@@ -56,7 +56,7 @@ public:
 	std::string getLine();
 
 	// Escribe al puerto de forma asincronica
-	// Cuando writeDone devuelva true, la escritura se completo correctamente
+	// Cuando writeDone devuelva true, la escritura se completo.
 	void write(std::string w_data);
 
 	// Escribe al puerto de forma sincronica.

@@ -7,6 +7,9 @@ using namespace std;
 int main() {
 
 	string port;
+
+	cout << "Nombre del puerto: ";
+
 	cin >> port;
 
 	SerialLCD lcd(port);

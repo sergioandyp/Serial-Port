@@ -152,6 +152,5 @@ bool SerialPort::writeDone() {
 }
 
 void SerialPort::writeCb(const boost::system::error_code& error, size_t size) {
-    if (!error.failed())
         writeOK = true;
 }

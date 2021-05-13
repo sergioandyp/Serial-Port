@@ -9,12 +9,14 @@ int writeTest(string portName);
 
 int main() {
 
-    string port;
 
+    cout << "Nombre del puerto: ";
+
+    string port;
     cin >> port;
 
-    return readTest(port);
-    //return writeTest(port);
+    //return readTest(port);
+    return writeTest(port);
 
 
 }
@@ -25,8 +27,6 @@ int readTest(string portName) {
     try {
 
         SerialPort port(portName);
-
-        cout << "Recibo" << endl;
 
         port.startReading();
 
@@ -41,8 +41,6 @@ int readTest(string portName) {
             data = port.getLine();
 
             cout << data << endl;
-
-            //Sleep(rand() % 5000);
         }
 
         port.disconnect();
@@ -51,16 +49,14 @@ int readTest(string portName) {
         cout << "Error: " << e.what() << endl;
         return 1;
     }
+
+    return 0;
 }
 
 int writeTest(string portName) {
     try {
 
         SerialPort port(portName);
-
-        cout << "Envio" << endl;
-
-        port.startReading();
 
         string data;
 
@@ -82,4 +78,6 @@ int writeTest(string portName) {
         cout << "Error: " << e.what() << endl;
         return 1;
     }
+
+    return 0;
 }
